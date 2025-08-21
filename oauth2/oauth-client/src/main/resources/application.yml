@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: oauth-client
+  security:
+    oauth2:
+      client:
+        registration:
+          service-b:
+            client-id: oauth-client-id
+            client-secret: oauth-client-secret
+            authorization-grant-type: client_credentials
+            scope: api.read
+        provider:
+          service-b:
+            token-uri: http://localhost:8081/oauth2/token
