@@ -1,0 +1,87 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'io.spring.dependency-management' version "${springDependencyVersion}"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+allprojects {
+    group = 'com.example'
+    version = '0.0.1-SNAPSHOT'
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    compileJava.options.encoding = 'UTF-8'
+    repositories {
+        maven { url = 'https://plugins.gradle.org/m2/' }
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudDependencyVersion}"
+            mavenBom "io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:${openTelemetryVersion}"
+        }
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+        implementation 'org.springframework.retry:spring-retry'
+        implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+        // Lombok
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        // MapStruct
+        implementation "org.mapstruct:mapstruct:${mapStructVersion}"
+        annotationProcessor "org.mapstruct:mapstruct-processor:${mapStructVersion}"
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+        // OpenAPI & Swagger
+        implementation "io.swagger.core.v3:swagger-annotations:${swaggerAnnotationVersion}"
+        implementation "org.openapitools:jackson-databind-nullable:${jacksonDatabindVersion}"
+        implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${openApiWebMvcUIVersion}"
+
+        implementation 'jakarta.validation:jakarta.validation-api'
+
+        // Testing
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testCompileOnly 'org.projectlombok:lombok'
+        testAnnotationProcessor 'org.projectlombok:lombok'
+
+        // Utility Libraries
+        implementation 'org.apache.commons:commons-lang3'
+        implementation "org.apache.commons:commons-collections4:${apacheCommonCollectionVersion}"
+        implementation "org.apache.httpcomponents:httpclient:${apacheHttpClientVersion}"
+
+        // Observability
+        implementation("p6spy:p6spy:${p6spyVersion}")
+        implementation 'io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter'
+        runtimeOnly 'io.opentelemetry.instrumentation:opentelemetry-logback-mdc-1.0'
+        runtimeOnly "io.opentelemetry:opentelemetry-exporter-logging"
+        implementation("io.micrometer:micrometer-tracing-bridge-otel")
+        implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+        implementation("io.github.openfeign:feign-micrometer:${feignMicrometerVersion}")
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+}
