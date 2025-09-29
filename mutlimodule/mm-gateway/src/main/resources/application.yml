@@ -1,0 +1,19 @@
+server:
+  port: 8089
+
+spring:
+  application:
+    name: mm-gateway
+
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: mm-e-commerce
+              uri: http://127.0.0.1:8080
+              predicates:
+                - Path=/api/e-commerce/**
+logging:
+  level:
+    root: debug

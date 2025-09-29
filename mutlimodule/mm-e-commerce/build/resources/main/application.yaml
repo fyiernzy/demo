@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: mm-e-commerce
+
+  cloud:
+    openfeign:
+      oauth2:
+        clientRegistrationId: api-client
+        enabled: true
+      client:
+        config:
+          default:
+            connectTimeout: 3000
+            readTimeout: 3000
+    loadbalancer:
+      retry:
+        enabled: true
+
+
+  security:
+    oauth2:
+      client:
+        provider:
+          local-as:
+            issuer-uri: http://localhost:9000
+        registration:
+          api-client:
+            provider: local-as
+            client-id: api-client
+            client-secret: secret1
+            authorization-grant-type: client_credentials
+            client-authentication-method: client_secret_basic
+            scope: api.read
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web.client: DEBUG
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${spring.application.name}.${server.port}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
