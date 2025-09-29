@@ -1,0 +1,8 @@
+security:
+  oauth:
+    blocklist:
+      path:
+        - "/.well-known/openid-configuration"
+        - "/oauth2/jwks"
+        - "/oauth2/par"
+        - "/oauth2/authorize"

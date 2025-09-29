@@ -1,0 +1,46 @@
+{
+  "properties": [
+    {
+      "name": "auth.clients",
+      "type": "java.util.Map<java.lang.String, com.example.oauthserver.boot.BootOauthClient>"
+    },
+    {
+      "name": "auth.clients.*.auth-method",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "auth.clients.*.grants",
+      "type": "java.util.List<java.lang.String>"
+    }
+  ],
+  "hints": [
+    {
+      "name": "auth.clients.*.auth-method",
+      "values": [
+        {
+          "value": "client_secret_basic"
+        },
+        {
+          "value": "private_key_jwt"
+        },
+        {
+          "value": "tls_client_auth"
+        }
+      ]
+    },
+    {
+      "name": "auth.clients.*.grants",
+      "values": [
+        {
+          "value": "authorization_code"
+        },
+        {
+          "value": "client_credentials"
+        },
+        {
+          "value": "refresh_token"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+auth:
+  clients:
+    api-client:
+      client-id: api-client
+      client-name: api-client
+      auth-method: client_secret_basic
+      grants:
+        - client_credentials
+      scopes:
+        - api.read
+      secret: "{noop}secret1"
+
+    api-visa:
+      client-id: api-visa
+      client-name: api-visa
+      auth-method: client_secret_basic
+      grants:
+        - client_credentials
+      scopes:
+        - api.read
+      secret: "{noop}secret2"
